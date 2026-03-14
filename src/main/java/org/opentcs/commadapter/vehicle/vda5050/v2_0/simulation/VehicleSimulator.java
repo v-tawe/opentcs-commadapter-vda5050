@@ -67,12 +67,12 @@ public class VehicleSimulator
   /**
    * Version.
    */
-  private static final String VERSION = "v1";
+  private static final String VERSION = "v2";
   /**
    * The base path for any topic.
    */
   private static final String TOPIC_BASE
-      = "uagv/" + VERSION + "/" + MANUFACTURER + "/" + SERIAL_NUMBER;
+      = "VDA5050/" + VERSION + "/" + MANUFACTURER + "/" + SERIAL_NUMBER;
   /**
    * Movement speed in milliseconds.
    */
