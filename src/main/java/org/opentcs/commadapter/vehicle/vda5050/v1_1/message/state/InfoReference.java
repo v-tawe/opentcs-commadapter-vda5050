@@ -25,7 +25,7 @@ public class InfoReference
   /**
    * The reference value.
    */
-  private String referenceValue;
+  private Object referenceValue;
 
   @JsonCreator
   public InfoReference(
@@ -34,40 +34,59 @@ public class InfoReference
       String referenceKey,
       @Nonnull
       @JsonProperty(required = true, value = "referenceValue")
-      String referenceValue
+      Object referenceValue
   ) {
     this.referenceKey = requireNonNull(referenceKey, "referenceKey");
     this.referenceValue = requireNonNull(referenceValue, "referenceValue");
   }
 
-  public String getReferenceKey() {
-    return referenceKey;
-  }
-
-  public InfoReference setReferenceKey(
-      @Nonnull
-      String referenceKey
-  ) {
-    this.referenceKey = requireNonNull(referenceKey, "referenceKey");
-    return this;
-  }
-
-  public String getReferenceValue() {
+  public Object getReferenceValue() {
     return referenceValue;
   }
 
   public InfoReference setReferenceValue(
       @Nonnull
-      String referenceValue
+      Object referenceValue
   ) {
     this.referenceValue = requireNonNull(referenceValue, "referenceValue");
     return this;
   }
 
+  /**
+   * Returns the reference value as a string.
+   * If the reference value is an array, it will be converted to a comma-separated string.
+   *
+   * @return The reference value as a string.
+   */
+  public String getReferenceValueAsString() {
+    if (referenceValue == null) {
+      return null;
+    }
+    if (referenceValue instanceof String) {
+      return (String) referenceValue;
+    }
+    if (referenceValue instanceof Object[]) {
+      return String.join(
+          ", ", java.util.Arrays.stream((Object[]) referenceValue)
+              .map(Object::toString)
+              .toArray(String[]::new)
+      );
+    }
+    if (referenceValue instanceof java.util.List) {
+      return String.join(
+          ", ", ((java.util.List<?>) referenceValue)
+              .stream()
+              .map(Object::toString)
+              .toArray(String[]::new)
+      );
+    }
+    return referenceValue.toString();
+  }
+
   @Override
   public String toString() {
     return "InfoReference{" + "referenceKey=" + referenceKey
-        + ", referenceValue=" + referenceValue
+        + ", referenceValue=" + getReferenceValueAsString()
         + '}';
   }
 
